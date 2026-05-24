@@ -1,0 +1,89 @@
+Write a Python training script for a different ECG classification model that follows **exactly the same experimental design choices and training pipeline** as the provided xECG training script. The goal is to ensure **maximum comparability between models for robustness benchmarking**.
+
+The script should replicate the following methodological design choices:
+
+**Dataset and Input**
+
+* Use the **Harvard-Emory ECG HDF5 dataset** containing approximately **974,171 recordings**.
+* Each sample is a **10-second ECG segment (1000 samples) with 12 leads**.
+* Input tensor format must be **[1000, 12] (time × leads)**.
+
+**Label Mapping**
+
+* The dataset contains **150 diagnostic classes**.
+* These must be mapped to the **21 PhysioNet/CinC 2021 scored classes** using `tasks.txt`.
+* Mapping should use **OR aggregation**: if any mapped 150-class label is positive, the corresponding 21-class label becomes **1**.
+
+**Handling Missing Classes**
+
+* Some PhysioNet classes may not exist in the dataset.
+* Create a **mask for the 21 classes**.
+* During training, **masked classes must not contribute to the loss**.
+
+**Loss Function**
+
+* Use **Binary Cross Entropy with logits (BCEWithLogitsLoss)** for **multi-label classification with 21 outputs**.
+* Apply the class mask to remove unmapped classes from the loss.
+
+**Class Imbalance Handling**
+
+* Compute **pos_weight = negative_samples / positive_samples**.
+* Estimate this using **100,000 randomly sampled training records**.
+
+**Dataset Split**
+
+* Perform a **random train/validation split** with:
+
+  * **90% training**
+  * **10% validation**
+* Use a **fixed random seed** for reproducibility.
+
+**Transfer Learning**
+
+* Load **pretrained encoder weights**.
+* Replace the pretrained classification head with a **new head with 21 output neurons**.
+* Perform **full finetuning** (not linear probing).
+
+**Optimizer**
+
+* Use **AdamW** optimizer.
+
+**Learning Rates**
+
+* Use **two learning rates**:
+
+  * `lr_encoder` for the pretrained encoder
+  * `lr_head` for the classification head
+
+**Regularization**
+
+* Apply **weight decay** (configurable).
+* Use **gradient clipping with max_norm = 1.0**.
+
+**Training Procedure**
+
+* Train for a configurable number of **epochs**.
+* Use **batch size from config**.
+* Use **PyTorch DataLoader with shuffling enabled and num_workers = 4**.
+
+**Early Stopping**
+
+* Stop training if validation loss does not improve for **patience = 2 epochs**.
+
+**Checkpointing**
+
+* Save:
+
+  * `ckpt_last.pt` after every epoch
+  * `ckpt_best.pt` when validation loss improves.
+
+**Reproducibility**
+
+* Set random seeds for **NumPy and PyTorch**.
+
+**Additional Requirements**
+
+* The script should be **modular and model-agnostic**, so that only the model import and architecture need to change.
+* The dataset loader, training loop, evaluation loop, and loss logic should remain **identical to the xECG pipeline** to ensure fair benchmarking.
+
+Output a **complete runnable PyTorch training script** following these constraints.

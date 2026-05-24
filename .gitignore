@@ -1,0 +1,63 @@
+# Raw and generated data
+data/raw/
+data/Benchmark/
+data/mit-bih-noise-stress-test-database-1.0.0/
+data/heedb_subset/
+data/evaluation_data/
+
+# Inference outputs
+inference/**/*.npy
+inference/**/*.npz
+inference/**/outputs_2021/
+inference/st-mem/data/dummy/
+
+# Temporary inference outputs
+inference/**/tmp_outputs/
+inference/**/*.pth
+
+Plots/
+
+# models
+models/ST-MEM-main/data/dummy/
+models/ecgfounder/checkpoint/12_lead_ECGFounder.pth
+
+# Model checkpoints and training logs
+training/**/*.pt
+training/**/*.pth
+training/**/*.ckpt
+training/**/checkpoints/
+training/**/runs/
+training/**/out*/
+training/**/wandb/
+training/st_mem/data/dummy/
+training/**/*.safetensors
+
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+*.h5
+
+# Generated plotting outputs
+plotting/**/*.csv
+plotting/**/*.npy
+plotting/**/*.npz
+plotting/**/*.pdf
+plotting/**/*.png
+plotting/**/*.svg
+
+# Dummy/example data
+inference/st-mem/data/dummy/
+training/st_mem/data/dummy/
+models/ST-MEM-main/data/dummy/

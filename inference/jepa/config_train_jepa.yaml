@@ -1,0 +1,35 @@
+# config_train_xecg_emory21.yaml
+
+device: "cuda"   # or "cpu"
+seed: 0
+
+paths:
+  h5_path: "C:\\Users\\simon\\Desktop\\bm\\training\\jepa\\heedb_i0006_250hz_jepa.h5"
+  tasks_txt: "C:/Users/simon/Desktop/bm/training/tasks.txt"
+  mapping_rules_py: "C:/Users/simon/Desktop/bm/training/mapping_rules.py"
+  out_dir: "C:/Users/simon/Desktop/bm/training/out_jepa_emory21"
+  jepa_checkpoint: "C:\\Users\\simon\\Desktop\\bm\\training\\jepa\\multiblock_epoch100.pth"
+
+data:
+  val_frac: 0.2
+  split_seed: 42
+
+train:
+  batch_size: 12
+  num_workers: 8
+  epochs: 10
+
+  lr_encoder: 0.00003
+  lr_head: 0.001
+  weight_decay: 0.01
+
+  use_pos_weight: true
+  pos_weight_sample_n: 100000
+
+  early_stopping: true
+  patience: 3
+  min_delta: 0.0
+
+debug:
+  validate_after_batches: -1
+  print_every: 20

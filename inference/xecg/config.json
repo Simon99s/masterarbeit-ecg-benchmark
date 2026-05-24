@@ -1,0 +1,24 @@
+{
+  "activation_fn": "gelu",
+  "batch_size": 32,
+  "cls_normalization": null,
+  "cls_type": "avg",
+  "drop_path_prob": 0.0,
+  "dropout": 0.0,
+  "embedding_size": 1024,
+  "num_heads": 4,
+  "patch_size": 25,
+  "proj_factor": 2,
+  "sampling_freq": 100,
+  "xlstm_config": [
+    "s",
+    "s",
+    "m",
+    "m",
+    "s",
+    "s",
+    "m",
+    "m",
+    "s"
+  ]
+}

@@ -1,0 +1,37 @@
+# config_train_xecg_emory21.yaml
+
+device: "cuda"
+seed: 0
+
+paths:
+  h5_path: "data/heedb_subset/heedb_i0006_100.h5"
+
+  tasks_txt: "training/tasks.txt"
+  mapping_rules_py: "training/mapping_rules.py"
+
+  xecg_config_yaml: "training/xecg/xecg_config.yaml"
+  xecg_config_json: "training/xecg/config.json"
+  xecg_safetensors: "training/xecg/model.safetensors"
+
+  out_dir: "training/xecg/out_xecg_emory21"
+
+data:
+  val_frac: 0.2
+  split_seed: 123
+
+train:
+  batch_size: 12
+  num_workers: 10
+  epochs: 10
+  early_stopping: true
+  patience: 3
+  min_delta: 0.0005
+
+  lr_encoder: 2.3e-5
+  lr_head: 7.5e-4
+
+  weight_decay: 1.0e-2
+  grad_clip: 1.0
+
+  use_pos_weight: true
+  pos_weight_sample_n: 5000
