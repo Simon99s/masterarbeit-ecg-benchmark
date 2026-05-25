@@ -1,7 +1,6 @@
 __pycache__/
 
 # custom files (e.g., config, data, notebook, ...)
-*.yaml
 *.sh
 *.ipynb
 *.csv
