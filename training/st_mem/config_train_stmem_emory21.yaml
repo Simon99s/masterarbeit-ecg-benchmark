@@ -1,0 +1,48 @@
+# config_train_stmem_emory21.yaml
+
+device: "cuda"
+seed: 0
+
+paths:
+  h5_path: "data/heedb_subset/heedb_i0006_100.h5"
+  tasks_txt: "training/tasks.txt"
+  stmem_checkpoint: "training/st_mem/st_mem_vit_base_encoder.pth"
+  out_dir: "training/st_mem/out_stmem_emory21"
+
+# ==========================================================
+# ST-MEM MODEL CONFIG
+# ==========================================================
+stmem:
+  model_name: "st_mem_vit_base"
+
+  model:
+    seq_len: 2250
+    patch_size: 75
+    num_classes: 21
+    num_leads: 12
+    qkv_bias: true
+
+# ==========================================================
+# DATA
+# ==========================================================
+data:
+  val_frac: 0.2
+  split_seed: 123
+
+# ==========================================================
+# TRAINING
+# ==========================================================
+train:
+  batch_size: 20
+  num_workers: 10
+  epochs: 10
+
+  early_stopping: true
+  patience: 3
+  min_delta: 0.0000
+
+  lr: 3.0e-5
+  weight_decay: 1.0e-2
+
+  use_pos_weight: true
+  pos_weight_sample_n: null
