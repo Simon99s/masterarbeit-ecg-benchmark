@@ -13,11 +13,25 @@ import wfdb
 from tqdm import tqdm
 
 # ============================================================
+# PLOT STYLE
+# ============================================================
+
+plt.rcParams.update({
+    "font.size": 13,          # default text size
+    "axes.titlesize": 15,     # subplot titles
+    "axes.labelsize": 14,     # x/y labels
+    "xtick.labelsize": 12,    # x tick labels
+    "ytick.labelsize": 12,    # y tick labels
+    "legend.fontsize": 12,
+    "figure.titlesize": 16,
+})
+
+# ============================================================
 # CONFIG
 # ============================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-HEADER_ROOT = PROJECT_ROOT / "evaluation" / "evaluation_heas"
+HEADER_ROOT = PROJECT_ROOT / "data" / "evaluation_data" 
 SIGNAL_ROOT = PROJECT_ROOT / "data" / "Benchmark" / "physionet_clean" / "physionet_clean"
 OUT_DIR = PROJECT_ROOT / "Plots" / "dataset_analysis"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -520,8 +534,8 @@ def plot_length_histogram(df: pd.DataFrame) -> None:
     # ------------------------------------------------------------
     ax_top_left.set_title("Distribution of ECG recording lengths")
 
-    fig.text(0.5, 0.02, "Recording length [s]", ha="center")
-    fig.text(0.04, 0.5, "Number of records", va="center", rotation="vertical")
+    fig.text(0.5, 0.02, "Recording length [s]", ha="center", fontsize=14)
+    fig.text(0.015, 0.5, "Number of records", va="center", rotation="vertical", fontsize=14)
 
     for ax in [ax_top_left, ax_top_right, ax_bottom_left, ax_bottom_right]:
         ax.grid(True, axis="y", alpha=0.3)
@@ -562,7 +576,7 @@ def plot_class_distribution(count_df: pd.DataFrame) -> None:
     out_csv = OUT_DIR / "cinc_scored30_class_distribution.csv"
     count_df.to_csv(out_csv, index=False)
 
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(13, 6.5))
 
     labels = count_df["class_name"].values
     counts = count_df["count"].values
@@ -671,7 +685,7 @@ def plot_cooccurrence_heatmap(co_percent_df: pd.DataFrame) -> None:
     fig.colorbar(
         im,
         ax=ax,
-        label=f"Co-occurrence [% of column class], scaled 0-{vmax:.0f}%",
+        label=f"",
     )
 
     ax.set_xticks(np.arange(co_percent_df.shape[1]))
@@ -702,7 +716,7 @@ def plot_cooccurrence_heatmap(co_percent_df: pd.DataFrame) -> None:
                 text,
                 ha="center",
                 va="center",
-                fontsize=5,
+                fontsize=7,
                 color="black",
             )
 

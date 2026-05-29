@@ -73,14 +73,14 @@ import numpy as np
 import pandas as pd
 
 # ==========================================================
-# CONFIG (FIX PATHS!)
+# CONFIG 
 # ==========================================================
 
 MODELS = ["jepa", "st-mem", "xecg"]
 
 LABEL_ROOT = INFERENCE_ROOT
 
-HEA_ROOT = PROJECT_ROOT / "evaluation" / "evaluation_heas"
+HEA_ROOT = PROJECT_ROOT / "data" / "evaluation_data"
 
 # IMPORTANT: use YOUR real mapping here
 from mapping_rules import build_groups_from_tasks

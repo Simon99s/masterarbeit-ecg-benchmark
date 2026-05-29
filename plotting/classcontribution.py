@@ -23,7 +23,7 @@ SR_CLASS = 12
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-HEA_ROOT = PROJECT_ROOT / "evaluation" / "evaluation_heas"
+HEA_ROOT = PROJECT_ROOT / "data" / "evaluation_data"
 EVAL2021_DIR = PROJECT_ROOT / "evaluation" / "evaluation-2021-main"
 
 LABEL_CACHE = {}

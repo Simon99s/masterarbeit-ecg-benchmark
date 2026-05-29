@@ -4,6 +4,18 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # ==========================================================
+# PLOT STYLE
+# ==========================================================
+plt.rcParams.update({
+    "font.size": 16,
+    "axes.titlesize": 17,
+    "axes.labelsize": 18,
+    "xtick.labelsize": 15,
+    "ytick.labelsize": 15,
+    "figure.titlesize": 15,
+})
+
+# ==========================================================
 # CONFIG
 # ==========================================================
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -28,7 +40,10 @@ MAX_SAMPLES = 5000  # ~10 seconds at 500 Hz
 
 def load_lead(path_no_ext, lead_index):
     record = wfdb.rdrecord(str(path_no_ext))
-    return record.p_signal[:MAX_SAMPLES, lead_index]
+    sig = record.p_signal[:MAX_SAMPLES, lead_index]
+    fs = record.fs
+    unit = record.units[lead_index] if record.units is not None else "mV"
+    return sig, fs, unit
 
 
 # ==========================================================
@@ -42,7 +57,7 @@ def plot_one_lead(lead_index, lead_name):
     clean_path = BASE_PATH / "physionet_clean" / "physionet_clean" / RECORD_REL_PATH
     print(f"Loading CLEAN {lead_name}: {clean_path}")
 
-    sig = load_lead(clean_path, lead_index)
+    sig, fs, unit = load_lead(clean_path, lead_index)
     signals.append(sig)
     titles.append("Clean")
 
@@ -58,7 +73,7 @@ def plot_one_lead(lead_index, lead_name):
             print(f"Loading {lead_name} {corr.upper()} {sev}: {path}")
 
             try:
-                sig = load_lead(path, lead_index)
+                sig, _, _ = load_lead(path, lead_index)
                 signals.append(sig)
                 titles.append(f"{corr.upper()}-{sev}")
             except Exception as e:
@@ -67,19 +82,24 @@ def plot_one_lead(lead_index, lead_name):
     global_min = min(s.min() for s in signals)
     global_max = max(s.max() for s in signals)
 
-    fig, axes = plt.subplots(4, 4, figsize=(16, 10), sharex=True, sharey=True)
+    fig, axes = plt.subplots(4, 4, figsize=(17, 11), sharex=True, sharey=True)
     axes = axes.flatten()
 
+    time_axis = np.arange(MAX_SAMPLES) / fs
+
     for i, (sig, title) in enumerate(zip(signals, titles)):
-        axes[i].plot(sig, color="black", linewidth=1)
-        axes[i].set_title(title, fontsize=10)
+        axes[i].plot(time_axis[:len(sig)], sig, color="black", linewidth=1)
+        axes[i].set_title(title, fontsize=17)
         axes[i].set_ylim(global_min, global_max)
         axes[i].grid(True, linestyle="--", linewidth=0.3)
+        axes[i].tick_params(axis="both", labelsize=13)
 
     for j in range(len(signals), len(axes)):
         axes[j].axis("off")
 
-    fig.suptitle(f"ECG Lead {lead_name} – Clean vs Corruptions", fontsize=16)
+    fig.suptitle(f"ECG Lead {lead_name} – Clean vs Corruptions", fontsize=20)
+    fig.supxlabel("Time (s)", fontsize=20)
+    fig.supylabel(f"Amplitude ({unit})", fontsize=18)
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
 
